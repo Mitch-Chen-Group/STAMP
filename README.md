@@ -1,3 +1,8 @@
+# Setting up instructions (tested on Ubuntu 20.04 and OSX M4 ARM64)
+
+
+
+
 # STAMP‑Benchmark
 
 *Benchmarking foundation models as feature extractors for weakly-supervised computational pathology*
