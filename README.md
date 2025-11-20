@@ -1,7 +1,43 @@
 # Setting up instructions (tested on Ubuntu 20.04 and OSX M4 ARM64)
 
+sudo apt update && sudo apt install -y openslide-tools libgl1-mesa-glx # libgl1-mesa-glx is needed for OpenCV
 
+conda create -n stamp python=3.10
+conda activate stamp
+conda install -c conda-forge libstdcxx-ng=12
 
+pip install git+https://github.com/KatherLab/STAMP-Benchmark
+pip install openslide-bin
+pip install git+https://github.com/Mahmoodlab/CONCH.git
+
+stamp init
+stamp setup
+
+git clone git+https://github.com/KatherLab/STAMP-Benchmark
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv self update
+
+# Update config.yaml
+preprocessing:
+  output_dir: /media/mitchchen/Storage/path_data/output/ # Path to save features to
+  wsi_dir: /media/mitchchen/Storage/path_data/input/ # Path of where the whole-slide images are.
+  cache_dir: /media/mitchchen/Storage/path_data/cache/ # Directory to store intermediate slide JPGs
+  microns: 256 # Edge length in microns for each patch (default is 256, with pixel size 224, 256/224 = ~1.14MPP = ~9x magnification)
+  norm: false # Perform Macenko normalisation
+  feat_extractor: conch # Use ctp for CTransPath (default) or uni for UNI (requires prior authentication)
+  del_slide: false # Remove the original slide after processing
+  cache: true # Save intermediate images (slide, background rejected, normalized)
+  only_feature_extraction: false # Only perform feature extraction (intermediate images (background rejected, [normalized]) have to exist)
+  cores: 32 # CPU cores to use
+  device: cuda # device to run feature extraction on (cpu, cuda, cuda:0, etc.)
+
+# Run script
+stamp --config config.yaml preprocess
+
+# For OSX M4 
+Use brew install (no sudo) for openslide and set num_workers (in DataLoader(..., num_workers=0) of feature_extractor.py) to 0. Don't use CUDA (set to CPU) and number of cores that you have
+
+# Original instructions 
 
 # STAMP‑Benchmark
 
