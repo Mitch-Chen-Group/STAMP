@@ -1,22 +1,26 @@
 # Setting up instructions (tested on Ubuntu 20.04 and OSX M4 ARM64)
-
+```bash
 sudo apt update && sudo apt install -y openslide-tools libgl1-mesa-glx # libgl1-mesa-glx is needed for OpenCV
-
-conda create -n stamp python=3.10
+```
+```bash
+conda create -n stamp python=3.10 \\
 conda activate stamp
 conda install -c conda-forge libstdcxx-ng=12
-
+```
+```bash
 pip install git+https://github.com/KatherLab/STAMP-Benchmark
 pip install openslide-bin
 pip install git+https://github.com/Mahmoodlab/CONCH.git
-
+```
+```bash
 stamp init
 stamp setup
-
+```
+```bash
 git clone git+https://github.com/KatherLab/STAMP-Benchmark
 curl -LsSf https://astral.sh/uv/install.sh | sh
 uv self update
-
+```
 # Update config.yaml
 preprocessing:
   output_dir: /media/mitchchen/Storage/path_data/output/ # Path to save features to
@@ -32,7 +36,9 @@ preprocessing:
   device: cuda # device to run feature extraction on (cpu, cuda, cuda:0, etc.)
 
 # Run script
+```bash
 stamp --config config.yaml preprocess
+```
 
 # For OSX M4 
 Use brew install (no sudo) for openslide and set num_workers (in DataLoader(..., num_workers=0) of feature_extractor.py) to 0. Don't use CUDA (set to CPU) and number of cores that you have
